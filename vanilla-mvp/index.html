@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CargaViva - Marketplace Logístico</title>
+    <meta name="description" content="Plataforma para conectar generadores de carga con transportistas">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <!-- Main App Container -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header id="main-header" class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo-text">🚛 CargaViva</h1>
+                    <p class="logo-subtitle">Marketplace Logístico</p>
+                </div>
+                <div class="header-actions">
+                    <button id="auth-btn" class="btn btn-secondary">Iniciar Sesión</button>
+                    <button id="user-menu-btn" class="user-menu-btn" style="display: none;">
+                        <div class="user-avatar">U</div>
+                        <span class="user-name">Usuario</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main-content" class="main-content">
+            <!-- Landing Page (shown when not authenticated) -->
+            <section id="landing-section" class="landing-section">
+                <div class="landing-hero">
+                    <div class="hero-content">
+                        <h2 class="hero-title">Conecta tu carga con el transportista ideal</h2>
+                        <p class="hero-subtitle">
+                            Publica tus cargas y recibe ofertas de transportistas verificados en tiempo real
+                        </p>
+                        <div class="hero-actions">
+                            <button id="get-started-btn" class="btn btn-primary">Comenzar Ahora</button>
+                            <button id="learn-more-btn" class="btn btn-ghost">Saber Más</button>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="glass-card hero-card">
+                            <div class="card-icon">📦</div>
+                            <h3>Fácil de usar</h3>
+                            <p>Publica tu carga en menos de 2 minutos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card glass-card">
+                        <div class="feature-icon">🚚</div>
+                        <h4>Transportistas Verificados</h4>
+                        <p>Todos nuestros transportistas pasan por un proceso de verificación riguroso</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Ofertas en Tiempo Real</h4>
+                        <p>Recibe ofertas instantáneas de múltiples transportistas</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <div class="feature-icon">🔒</div>
+                        <h4>Seguro y Confiable</h4>
+                        <p>Tus datos están protegidos con la más alta seguridad</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard (shown when authenticated) -->
+            <section id="dashboard-section" class="dashboard-section" style="display: none;">
+                <div class="dashboard-header">
+                    <h2 class="section-title">Mis Cargas</h2>
+                    <button id="create-load-btn" class="btn btn-primary">
+                        <span class="btn-icon">+</span>
+                        Nueva Carga
+                    </button>
+                </div>
+
+                <div id="loads-grid" class="loads-grid">
+                    <!-- Load cards will be inserted here dynamically -->
+                    <div class="empty-state">
+                        <div class="empty-icon">📦</div>
+                        <h3>No tienes cargas publicadas</h3>
+                        <p>Comienza publicando tu primera carga para conectar con transportistas</p>
+                        <button id="create-first-load-btn" class="btn btn-primary">Crear Primera Carga</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="auth-modal-title">Iniciar Sesión</h3>
+                <button id="close-auth-modal" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="auth-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="auth-email">Correo Electrónico</label>
+                        <input type="email" id="auth-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="auth-password">Contraseña</label>
+                        <input type="password" id="auth-password" class="form-input" required>
+                    </div>
+                    <div id="auth-name-group" class="form-group" style="display: none;">
+                        <label for="auth-name">Nombre Completo</label>
+                        <input type="text" id="auth-name" class="form-input" required>
+                    </div>
+                    <div id="auth-company-group" class="form-group" style="display: none;">
+                        <label for="auth-company">Empresa</label>
+                        <input type="text" id="auth-company" class="form-input">
+                    </div>
+                    <button type="submit" id="auth-submit-btn" class="btn btn-primary btn-full">
+                        Iniciar Sesión
+                    </button>
+                </form>
+                <div class="auth-toggle">
+                    <p id="auth-toggle-text">
+                        ¿No tienes cuenta?
+                        <button id="toggle-auth-mode" class="link-btn">Regístrate</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Form Modal -->
+    <div id="load-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-card modal-large">
+            <div class="modal-header">
+                <h3 id="load-modal-title">Nueva Carga</h3>
+                <button id="close-load-modal" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="load-form" class="load-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="origen">Origen</label>
+                            <input type="text" id="origen" class="form-input" placeholder="Ciudad, País" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="destino">Destino</label>
+                            <input type="text" id="destino" class="form-input" placeholder="Ciudad, País" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipo-mercancia">Tipo de Mercancía</label>
+                            <select id="tipo-mercancia" class="form-input" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="general">Carga General</option>
+                                <option value="refrigerada">Carga Refrigerada</option>
+                                <option value="peligrosa">Carga Peligrosa</option>
+                                <option value="liquida">Carga Líquida</option>
+                                <option value="seca">Carga Seca</option>
+                                <option value="otros">Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="peso">Peso (kg)</label>
+                            <input type="number" id="peso" class="form-input" placeholder="0" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha-requerida">Fecha Requerida</label>
+                            <input type="date" id="fecha-requerida" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifa-sugerida">Tarifa Sugerida ($)</label>
+                            <input type="number" id="tarifa-sugerida" class="form-input" placeholder="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requisitos">Requisitos Especiales</label>
+                        <textarea id="requisitos" class="form-input form-textarea" rows="3"
+                            placeholder="Especificaciones adicionales, equipo requerido, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fotos">Fotos de la Carga</label>
+                        <div class="file-upload-area">
+                            <input type="file" id="fotos" class="file-input" multiple accept="image/*">
+                            <div class="file-upload-content">
+                                <div class="upload-icon">📷</div>
+                                <p>Arrastra fotos aquí o <span class="link-text">haz clic para seleccionar</span></p>
+                                <small class="upload-hint">Máximo 5 fotos, formato JPG/PNG</small>
+                            </div>
+                        </div>
+                        <div id="photo-preview" class="photo-preview"></div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancel-load-btn" class="btn btn-ghost">Cancelar</button>
+                        <button type="submit" id="save-load-btn" class="btn btn-primary">Publicar Carga</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/loads.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
